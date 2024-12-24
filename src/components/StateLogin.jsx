@@ -8,6 +8,10 @@ export default function Login() {
     password: "",
   });
 
+  // 이메일 값이 변경되어 컴포넌트가 재실행될 때마다 유효성 검증
+  const emailIsInvalid =
+    enteredValues.email !== "" && !enteredValues.email.includes("@");
+
   function handleSubmit(event) {
     event.preventDefault();
 
@@ -36,6 +40,9 @@ export default function Login() {
             value={enteredValues.email}
             onChange={(event) => handleInputChange("email", event.target.value)}
           />
+          <div className="control-error">
+            {emailIsInvalid && <p>Please enter a valid email.</p>}
+          </div>
         </div>
 
         <div className="control no-margin">
