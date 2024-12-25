@@ -8,9 +8,13 @@ export default function Login() {
     password: "",
   });
 
+  const [didEdit, setDidEdit] = useState({
+    email: false,
+    password: false,
+  });
+
   // 이메일 값이 변경되어 컴포넌트가 재실행될 때마다 유효성 검증
-  const emailIsInvalid =
-    enteredValues.email !== "" && !enteredValues.email.includes("@");
+  const emailIsInvalid = didEdit.email && !enteredValues.email.includes("@");
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -23,6 +27,17 @@ export default function Login() {
     setEnteredValues((prevValues) => ({
       ...prevValues,
       [identifier]: value, // 속성명에 대괄호[] 지정, value 직접적 지정
+    }));
+    setDidEdit((prevDidEdit) => ({
+      ...prevDidEdit,
+      [identifier]: false,
+    }));
+  }
+
+  function handleInputBlur(identifier) {
+    setDidEdit((prevDidEdit) => ({
+      ...prevDidEdit,
+      [identifier]: true,
     }));
   }
 
@@ -39,6 +54,7 @@ export default function Login() {
             name="email"
             value={enteredValues.email}
             onChange={(event) => handleInputChange("email", event.target.value)}
+            onBlur={() => handleInputBlur("email")}
           />
           <div className="control-error">
             {emailIsInvalid && <p>Please enter a valid email.</p>}
