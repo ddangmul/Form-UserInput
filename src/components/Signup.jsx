@@ -1,4 +1,9 @@
+import { useState } from "react";
+
 export default function Signup() {
+  // 비밀번호, 비밀번호 확인 입력 일치여부 상태
+  const [passwordsAreNotEqual, setPasswordsAreNotEqual] = useState(false);
+
   function handleSubmit(event) {
     event.preventDefault(); // 의도한 HTTP 통신이 원활하게 이뤄지도록
 
@@ -12,8 +17,13 @@ export default function Signup() {
     const data = Object.fromEntries(fd.entries());
     const acquisitionChannel = fd.getAll("acquisition");
     data.acquisition = acquisitionChannel;
-    console.log(data);
 
+    if (data.password !== data["confirm-password"]) {
+      setPasswordsAreNotEqual(true); // 오류메세지 출력용
+      return; // 일치하지 않을 경우 종료
+    }
+    setPasswordsAreNotEqual(false);
+    console.log("HTTP request ...");
     event.target.reset();
   }
 
@@ -41,6 +51,9 @@ export default function Signup() {
             name="confirm-password"
             required
           />
+          <div className="control-error">
+            {passwordsAreNotEqual && <p>Passwords must match.</p>}
+          </div>
         </div>
       </div>
 
