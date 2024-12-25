@@ -20,6 +20,8 @@ export default function Login() {
     event.preventDefault();
 
     // 이벤트 관리 로직
+    if (...)
+
     console.log(enteredValues);
   }
 

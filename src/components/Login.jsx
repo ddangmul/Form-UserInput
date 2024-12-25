@@ -1,6 +1,8 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 export default function Login() {
+  const [emailIsInvalid, setemailIsInvalid] = useState();
+
   const email = useRef();
   const password = useRef();
 
@@ -10,8 +12,17 @@ export default function Login() {
     const enteredEmail = email.current.value;
     const enteredPassword = password.current.value;
 
-    console.log(enteredEmail, enteredPassword);
-    // enteredEmail = "";
+    const emailIsValid = enteredEmail.includes("@");
+
+    if (!emailIsValid) {
+      // 유효하지 않으면 코드 종료
+      setemailIsInvalid(true);
+      return;
+    }
+
+    setemailIsInvalid(false);
+
+    console.log("Sending HTTP request...");
   }
 
   function handleInputChange(identifier, value) {
@@ -29,6 +40,9 @@ export default function Login() {
         <div className="control no-margin">
           <label htmlFor="email">Email</label>
           <input id="email" type="email" name="email" ref={email} />
+          <div className="control-error">
+            {emailIsInvalid && <p>Please enter a valid email adress.</p>}
+          </div>
         </div>
 
         <div className="control no-margin">
